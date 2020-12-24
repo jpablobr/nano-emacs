@@ -1,4 +1,86 @@
-## GNU Emacs / N Λ N O
+## Monkeytype on GNU Emacs / N Λ N O
+
+**This is a fork of GNU Emacs / N Λ N O meant for [Monkeytype](https://github.com/jpablobr/emacs-monkeytype)**
+
+To run it clone this repository and from inside run the following in
+your terminal:
+
+```
+$ emacs -q -l monkeytype.el
+```
+To start _monkeytyping_ execute **M-x monkeytype-fortune** or any of
+the other commands listed in the Monkeytype's repository.
+
+The `monkeytype.el` file has a basic [Emacs Monkeytype
+](https://github.com/jpablobr/emacs-monkeytype) configuration and at
+the end it also loads a `monkeytype.local.el` file (if it exists)
+for custom configuration (keybindings, functions, etc.**.
+
+Here's an example of further configuration meant for the
+`monkeytype.local.el` file:
+
+```elisp
+;; Reset some of Emacs N Λ N O defauls
+
+(setq ns-use-native-fullscreen t
+      mac-option-key-is-meta nil
+      mac-command-key-is-meta nil
+      mac-command-modifier 'control
+      mac-option-modifier 'meta
+      mac-use-title-bar nil
+      ;; http://irreal.org/blog/?p=1450
+      mac-function-modifier 'hyper)
+
+(setq default-frame-alist
+      (append (list
+	       '(font . "Roboto Mono:style=Light:size=20")
+	       ;; '(font . "Roboto Mono Emacs Regular:size=14")
+	       '(min-height . 1)  '(height     . 45)
+	       '(min-width  . 1) '(width      . 81)
+               '(vertical-scroll-bars . nil)
+               '(internal-border-width . 24)
+               '(left-fringe    . 0)
+               '(right-fringe   . 0)
+               '(tool-bar-lines . 0)
+               '(menu-bar-lines . 0))))
+
+;; Custom monkeytype functions
+;;;###autoload
+(defun monkeytype-pangrams ()
+  "Monkeytype most common pangrams randomised."
+  (interactive)
+  (monkeytype--init
+   (mapconcat
+    #'identity
+    (monkeytype--utils-nshuffle
+     '(
+       "Jived fox nymph grabs quick waltz"
+       "Glib jocks quiz nymph to vex dwarf"
+       "How vexingly quick daft zebras jump!"
+       "The five boxing wizards jump quickly"
+       "Sphinx of black quartz, judge my vow"
+       "Waltz, bad nymph, for quick jigs vex"
+       "Jackdaws love my big sphinx of quartz"
+       "Pack my box with five dozen liquor jugs"
+       "The quick brown fox jumps over the lazy dog"))
+    "\n")))
+
+(global-set-key (kbd "C-c C-c j") #'monkeytype-pangrams)
+
+(monkeytype-pangrams)
+
+(provide 'monkeytype.local)
+```
+
+## Screencast Demo
+
+![Monkeytype](./images/scrollable-quick-peek.gif)
+
+**For more specifics about this N Λ N O Emacs configuration***, the
+following is an excerpt of the project's README but for more info here
+you can find the project's original repository:
+
+https://github.com/rougier/nano-emacs
 
 **GNU Emacs / N Λ N O** is a set of configuration files for GNU Emacs
 such as to provide a nice and consistent look and feel as shown below.
@@ -26,116 +108,3 @@ You need a recent version of
 [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) and
 [Fira Code](https://fonts.google.com/specimen/Fira+Code) fonts
 installed on your system. There are no other dependencies.
-
-### Quick test
-
-The easiest way to test nano emacs is to clone the directory on your
-desktop and to type (from inside the cloned repository):
-
-```
-$ emacs -q -l nano.el
-```
-
-### Installation
-
-If you like the result, you can merge the content of [nano.el](nano.el) into
-your emacs configuration file. To do so,
-you'll need to modify the `load-path` to include the nano emacs
-repository and then call for the different modules. The only mandatory
-module is `nano-faces` that defines 6 faces that are used in other
-modules.
-
-### Modules
-
-- **[nano.el](./nano.el)** (optional)
-
-  > This module is mostly used to test nano emacs locally. Its content
-    is supposed to be merged into an existing emacs configuration. See
-    [Quick test](#Quick-test) section above.
-
-#### Mandatory
-
-* **[nano-base-colors.el](./nano-base-colors.el)**
-
-  > This module defines the fundamental colors of nano theme.
-    If your Emacs has a theme or color-scheme, make sure its loaded
-    before you load nano-faces so that its colors are used by nano.
-
-* **[nano-faces.el](./nano-faces.el)**
-
-  > This module defines the fundamental faces of nano theme.
-    If your Emacs has a theme or color-scheme, make sure its loaded
-    before you load nano-faces so that its colors are used by nano.
-
-
-#### Optional
-
-- **[nano-theme-light.el](./nano-theme-light.el)** &
-  **[nano-theme-dark.el](./nano-theme-dark.el)**
-
-  > Theses modules define light and dark themes respectively by
-    overriding the base colors. If your Emacs is not themed, you are
-    encouraged to try one of these.
-
-- **[nano-theme.el](./nano-theme.el)**
-
-  > This module derives faces for several popular emacs modes from the
-    nano faces. You can either use them all by calling
-    `(nano-theme)`, or pick what you want by calling your selection
-    of `(nano-theme--` functions.
-
-
-- **[nano-help.el](./nano-help.el)**
-
-  > This module provides a function to display a small help message in
-    the echo area.
-
-- **[nano-splash.el](./nano-splash.el)**
-
-  > This module provides a splash screen when emacs is started.
-
-- **[nano-modeline.el](./nano-modeline.el)**
-
-  > This module defines a header line that is mode dependent and takes
-    care of hiding the modeline when necessary.
-
-- **[nano-layout.el](./nano-layout.el)**
-
-  > This module defines the overall layout of an emacs frame, defining
-    default font, fringes, margins, etc.
-
-- **[nano-defaults.el](./nano-defaults.el)**
-
-  > This modules provides a set of sane default settings for Emacs.
-
-- **[nano-session.el](./nano-session.el)**
-
-  > This modules configures Emacs such that a session is saved from
-    one run to the other.
-
-- **[nano-bindings.el](./nano-bindings.el)**
-
-  > This modules provides a reduced set of keybindings for a few
-    common commands.
-
-- **[nano-counsel.el](./nano-counsel.el)**
-
-  > This modules configures the [counsel
-    package](https://elpa.gnu.org/packages/counsel.html) that needs to
-    have been **installed** by user.
-
-- **[nano-colors.el](./nano-colors.el)**
-
-  > This module provides a collection of colors palettes
-    ([open colors](https://yeun.github.io/open-color/),
-     [material colors](https://material.io/),
-     [nord colors](https://www.nordtheme.com/))
-    with functions for easily accessing them.
-
-#### Experimental
-
-- **[nano-command.el](./nano-command.el)**
-
-  > This package provised an experimental command line prompt in the
-  > header line. It has not history nor completion but can be used for
-  > one line input such as org-capture.

@@ -19,8 +19,14 @@
 ;; ---------------------------------------------------------------------
 (package-initialize)
 
-;; Path to nano emacs modules (mandatory)
-(add-to-list 'load-path ".")
+;; Setting `nano-monkeytype-dir' is useful to be able to
+;; execute `monkeytype' from different paths.
+(defvar nano-mankeytype-dir nil)
+(setq nano-monkeytype-dir (getenv "NANO_MONKEYTYPE_DIR"))
+
+(if nano-monkeytype-dir
+    (add-to-list 'load-path nano-monkeytype-dir)
+  (add-to-list 'load-path "."))
 
 (require 'nano)
 
@@ -97,5 +103,13 @@
     (centered-cursor-mode))
   (add-hook 'monkeytype-mode-hook #'monkeytype-mode-hook))
 
-(when (file-exists-p "monkeytype.local.el")
-  (require 'monkeytype.local))
+;; Try to load monkeytype.local.el
+(if nano-monkeytype-dir
+    (when
+        (file-exists-p
+         (concat nano-monkeytype-dir "/monkeytype.local.el"))
+      (require 'monkeytype.local))
+  (when
+      (file-exists-p
+       "monkeytype.local.el")
+    (require 'monkeytype.local)))

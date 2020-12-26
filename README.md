@@ -76,6 +76,46 @@ Here's an example of further configuration meant for the
 
 ![Monkeytype](./images/scrollable-quick-peek.gif)
 
+## Alternative Running Methods
+
+The `nano-monkeytype.bash` script allows to run nano-monkeytype from
+any directory if the `NANO_MONKEYTYPE_DIR` environment variable exists
+and points to the repository's directory, and the scrip has been added
+to somewhere in your `$PATH` (you can link it with: `ln -s
+/path/to/nano-monkeytype.bash /your/bin/dir/nano-monkeytype`)
+
+### 1) Adding `NANO_MONKEYTYPE_DIR` environment variable
+
+Set the `NANO_MONKEYTYPE_DIR` environment variable in your `.bashrc`
+or `.zshrc`:
+
+```bash
+export NANO_MONKEYTYPE_DIR="/path/to/repo"
+```
+And just run the script `nano-monkeytype.bash`.
+
+### 2 One liner
+
+It is also possible to run the script like this:
+
+```bash
+exec env NANO_MONKEYTYPE_DIR="/path/to/repo" monkeytype.bash
+```
+And maybe add an alias to it.
+
+### 3 From Emacs
+
+Add the following to your `.emacs`:
+
+```elisp
+(defun my/run-nano-monketype ()
+  (interactive)
+  (setenv "NANO_MONKEYTYPE_DIR" "/path/to/repo")
+  (shell-command-to-string "monkeytype -dark"))
+
+(global-set-key (kbd "My-Key-binding") #'my/run-nano-monkeytype)
+```
+
 **For more specifics about this N Λ N O Emacs configuration***, the
 following is an excerpt of the project's README but for more info here
 you can find the project's original repository:
